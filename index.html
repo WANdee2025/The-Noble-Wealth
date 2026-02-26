@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noble Wealth - Digital Age</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #display-container {
+            max-width: 90%;
+            text-align: center;
+            /* ปรับขนาดตัวอักษรให้ใหญ่ขึ้นชัดเจน */
+            font-size: 3.5rem; 
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        .line {
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .highlight-line {
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 4rem;
+        }
+
+        /* เอฟเฟกต์กระพริบ */
+        .blink-final {
+            animation: blink-effect 0.5s ease-in-out 3;
+        }
+
+        @keyframes blink-effect {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="display-container"></div>
+
+<script>
+    const content = [
+        { text: "The Noble Wealth", class: "line" },
+        { text: "Whoever has unwavering faith in the Buddha,", class: "line" },
+        { text: "Whose virtue is pure and praised by the wise,", class: "line" },
+        { text: "Who has confidence in the community and sees the truth clearly,", class: "line" },
+        { text: "They are not poor.", class: "highlight-line" },
+        { text: "Their life is not in vain.", class: "highlight-line" }
+    ];
+
+    const container = document.getElementById('display-container');
+    let lineIndex = 0;
+    let charIndex = 0;
+
+    function typeChar() {
+        if (lineIndex < content.length) {
+            // สร้าง element บรรทัดใหม่ถ้ายังไม่มี
+            let currentLineElem = document.getElementById('line-' + lineIndex);
+            if (!currentLineElem) {
+                currentLineElem = document.createElement('span');
+                currentLineElem.id = 'line-' + lineIndex;
+                currentLineElem.className = content[lineIndex].class;
+                container.appendChild(currentLineElem);
+                
+                // ถ้าเป็นบรรทัดใหม่ ให้ใส่ <br> ก่อนหน้า ยกเว้นบรรทัดแรก
+                if (lineIndex > 0) {
+                    currentLineElem.style.display = "block";
+                }
+            }
+
+            // พิมพ์ตัวอักษรทีละตัว
+            const fullText = content[lineIndex].text;
+            if (charIndex < fullText.length) {
+                currentLineElem.innerHTML += fullText.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeChar, 40); // ความเร็วในการวิ่งของอักษร
+            } else {
+                // จบบรรทัดนี้ ไปบรรทัดถัดไป
+                lineIndex++;
+                charIndex = 0;
+                setTimeout(typeChar, 500); // เว้นจังหวะก่อนขึ้นบรรทัดใหม่เล็กน้อย
+            }
+        } else {
+            // เมื่อพิมพ์ครบทุกตัวแล้ว ให้กระพริบทั้งหน้าจอ 3 ครั้ง
+            container.classList.add('blink-final');
+        }
+    }
+
+    // เริ่มทำงาน
+    window.onload = typeChar;
+</script>
+
+</body>
+</html>
